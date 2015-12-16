@@ -40,14 +40,30 @@ re_cond_comment_end_space = re.compile(r'\s+(<!\[endif\])',
                                        re.MULTILINE | re.DOTALL | re.UNICODE)
 
 
-def html_minify(html_code, ignore_comments=True, parser="html5lib"):
+def html_minify(html_code, ignore_comments=True, parser="html5lib", max_length=0):
     html_code = force_text(html_code)
     soup = bs4.BeautifulSoup(html_code, parser)
     mini_soup = space_minify(soup, ignore_comments)
     if FOLD_DOCTYPE is True:
         # monkey patching to remove new line after doctype
         bs4.element.Doctype.SUFFIX = six.u('>')
-    return six.text_type(mini_soup)
+    s = six.text_type(mini_soup)
+
+    if max_length > 0:
+        pos = 0
+        l = []
+        while len(s) - pos > max_length:
+            p = s.rfind('<', pos, pos+max_length)
+            if p < 0:
+                p = s.find('<', pos+max_length)
+                if p < 0:
+                    l.append(s[pos:])
+                    break
+            l.append(s[pos:p])
+            pos = p
+        s = '\n'.join(l)
+    
+    return s 
 
 
 def space_minify(soup, ignore_comments=True):
