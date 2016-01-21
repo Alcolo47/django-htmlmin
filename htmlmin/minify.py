@@ -53,7 +53,7 @@ def html_minify(html_code, ignore_comments=True, parser="html5lib", max_length=0
         pos = 0
         l = []
         while len(s) - pos > max_length:
-            p = s.rfind('<', pos, pos+max_length)
+            p = s.rfind('<', pos+1, pos+max_length)
             if p < 0:
                 p = s.find('<', pos+max_length)
                 if p < 0:
