@@ -57,10 +57,11 @@ def html_minify(html_code, ignore_comments=True, parser="html5lib", max_length=0
             if p < 0:
                 p = s.find('<', pos+max_length)
                 if p < 0:
-                    l.append(s[pos:])
                     break
             l.append(s[pos:p])
             pos = p
+        if pos < len(s):
+            l.append(s[pos:])
         s = '\n'.join(l)
     
     return s 
