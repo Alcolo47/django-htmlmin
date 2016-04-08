@@ -26,11 +26,10 @@ class HtmlMinifyMiddleware(object):
                 if regex.match(request.path.lstrip('/')):
                     return False
 
-#         if response.status_code != 200:
-#             return False
         if not 'text/html' in response['Content-Type']:
             return False
         return getattr(response, 'minify_response', True)
+
 
     def process_response(self, request, response):
         minify = getattr(settings, "HTML_MINIFY", not settings.DEBUG)
