@@ -14,8 +14,9 @@ import six
 
 from htmlmin.minify import html_minify
 
-resources_path = lambda *paths: abspath(join(dirname(__file__),
-                                             'resources', *paths))
+
+def resources_path(*paths):
+    return abspath(join(dirname(__file__), 'resources', *paths))
 
 
 class TestMinify(unittest.TestCase):
